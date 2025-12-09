@@ -40,6 +40,6 @@ class CoinViewModel{
             }catch{
                 print("Error decoding: \(error)")
             }
-        }
+        }.resume()
     }
 }
