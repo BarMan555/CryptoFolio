@@ -15,7 +15,7 @@ struct CoinRow: View {
             AsyncImage(url: URL(string: coin.logo)) { image in
                 image.resizable() // Разрешаем менять размер картинки
             } placeholder: {
-    ProgressView()
+                ProgressView()
             }
             .frame(width: 30, height: 30)
             .clipShape(Circle())
@@ -26,10 +26,10 @@ struct CoinRow: View {
             Spacer()
             
             VStack {
-                Text("\(coin.price, specifier: "%.2f") $")
+                Text("\(coin.currentPrice, specifier: "%.2f") $")
                     .bold()
-                Text("\(coin.change, specifier: "%.2f")%")
-                    .foregroundStyle(coin.change >= 0 ? .green : .red)
+                Text("\(coin.priceChangePercentage24h!, specifier: "%.2f")%")
+                    .foregroundStyle(coin.priceChangePercentage24h! >= 0 ? .green : .red)
             }
         }
         .padding(.vertical, 4)
@@ -37,12 +37,5 @@ struct CoinRow: View {
 }
 
 #Preview {
-    // Создаем фейковую монету руками
-    CoinRow(coin: Coin(
-        id: "bitcoin",
-        logo: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
-        name: "Bitcoin",
-        price: 45000.00,
-        change: 2.5
-    ))
+    CoinRow(coin: Coin.example)
 }
