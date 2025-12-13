@@ -34,6 +34,9 @@ struct ContentView: View {
             .navigationTitle("Crypto Market")
             .onAppear(perform: coinVM.fetchCoins)
             .searchable(text: $searchText, prompt: "Найти монетy")
+            .refreshable{
+                coinVM.fetchCoins()
+            }
         }
     }
 }
