@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct CoinRow: View {
     let coin: Coin
     
     var body: some View {
         HStack{
-            AsyncImage(url: URL(string: coin.logo)) { image in
-                image.resizable() // Разрешаем менять размер картинки
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 30, height: 30)
-            .clipShape(Circle())
+            KFImage(URL(string: coin.logo))
+                .placeholder{
+                    ProgressView()
+                }
+                .fade(duration: 0.25) // Плавное появление
+                .resizable()
+                .frame(width: 30, height: 30)
+                //.clipShape(Circle())
+                .scaledToFit()
             
             Text(coin.name)
                 .font(Font.headline)

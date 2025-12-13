@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import Kingfisher
 
 struct DetailView: View {
     let coin: Coin
@@ -40,18 +41,17 @@ extension DetailView {
         VStack {
             // 1. Блок: Логотип и Название
             HStack{
-                AsyncImage(url: URL(string: coin.logo)){img in
-                    img
+                KFImage(URL(string: coin.logo))
+                        .placeholder{
+                            ProgressView()
+                        }
+                        .fade(duration: 0.25)
                         .resizable()
                         .scaledToFit()
-                }
-                placeholder:{
-                    ProgressView()
-                }
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
-                .shadow(radius: 5)
-                .padding(10)
+                        .frame(width: 60, height: 60)
+                        .clipShape(Circle())
+                        .shadow(radius: 5)
+                        .padding(10)
                 
                 Text(coin.name)
                     .font(.title)
