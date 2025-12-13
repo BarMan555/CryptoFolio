@@ -26,12 +26,14 @@ struct ContentView: View {
         NavigationStack{
             List(filteredCoins){ coin in
                 HStack{
-                    CoinRow(coin: coin)
+                    NavigationLink(destination: DetailView(coin: coin)) {
+                        CoinRow(coin: coin)
+                    }
                 }
             }
             .navigationTitle("Crypto Market")
             .onAppear(perform: coinVM.fetchCoins)
-            .searchable(text: $searchText, prompt: "Найти монету")
+            .searchable(text: $searchText, prompt: "Найти монетy")
         }
     }
 }
