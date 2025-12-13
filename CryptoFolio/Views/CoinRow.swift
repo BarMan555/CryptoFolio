@@ -28,8 +28,8 @@ struct CoinRow: View {
             VStack {
                 Text("\(coin.currentPrice, specifier: "%.2f") $")
                     .bold()
-                Text("\(coin.priceChangePercentage24h!, specifier: "%.2f")%")
-                    .foregroundStyle(coin.priceChangePercentage24h! >= 0 ? .green : .red)
+                Text("\(coin.priceChangePercentage24h ?? 0, specifier: "%.2f")%")
+                    .foregroundStyle(coin.priceChangePercentage24h ?? 0 >= 0 ? .green : .red)
             }
         }
         .padding(.vertical, 4)
