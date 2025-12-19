@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var coinVM = CoinViewModel()
+    @Environment(CoinViewModel.self) private var coinVM
     @State private var searchText = ""
     var filteredCoins: [Coin] {
         // 1. Если поиск пустой — возвращаем весь список
@@ -22,6 +22,7 @@ struct HomeView: View {
             coin.name.localizedCaseInsensitiveContains(searchText)
         })
     }
+    
     var body: some View {
         NavigationStack{
             List(filteredCoins){ coin in
