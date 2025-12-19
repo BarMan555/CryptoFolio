@@ -49,7 +49,7 @@ extension DetailView {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 60, height: 60)
-                        .clipShape(Circle())
+                        //.clipShape(Circle())
                         .shadow(radius: 5)
                         .padding(10)
                 
