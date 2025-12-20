@@ -20,7 +20,7 @@ struct ContentView: View {
                 }
             
             // Вкладка 2: Портфолио
-            Portfolio()
+            PortfolioView()
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Portfolio")

@@ -14,5 +14,6 @@ struct CryptoFolioApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: PortfolioItem.self)
     }
 }
