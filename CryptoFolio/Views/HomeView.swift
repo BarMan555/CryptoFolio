@@ -44,4 +44,5 @@ struct HomeView: View {
 
 #Preview {
     ContentView()
+        .environment(CoinViewModel())
 }
