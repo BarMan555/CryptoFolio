@@ -36,7 +36,9 @@ struct PortfolioView: View {
                     }else{
                         ForEach(portfolioCoins){ item in
                             if let coin = coinVM.coins.first(where: {$0.id == item.coinId}){
-                                PortfolioRow(coin: coin, item: item)
+                                NavigationLink(destination: DetailView(coin: coin)) {
+                                    PortfolioRow(coin: coin, item: item)
+                                }
                             }
                         }
                     }
