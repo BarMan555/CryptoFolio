@@ -17,11 +17,12 @@ struct EditPortfolioView: View {
     @Environment(\.dismiss) var dismiss
     
     @Environment(\.modelContext) private var context
+    @Query private var portfolioCoins: [PortfolioItem]
     
     var body: some View {
         NavigationView{
             ScrollView {
-                VStack {
+                LazyVStack {
                     // 1. Поле ввода (Появляется только если монета выбрана)
                     if let coin = selectedCoin {
                         VStack(alignment: .leading, spacing: 10) {
@@ -94,13 +95,17 @@ struct EditPortfolioView: View {
             let amount = Double(quantityText)
         else { return }
         
-        // 1. Создаем объект для базы данных
-        let newItem = PortfolioItem(coinId: coin.id, amount: amount)
+        if let existingItem = portfolioCoins.first(where: {$0.coinId == coin.id}){
+            // 1. Обновляем старое значение amount
+            existingItem.amount = amount
+        }else{
+            // 1. Создаем объект для базы данных
+            let newItem = PortfolioItem(coinId: coin.id, amount: amount)
+            // Сохраняем в БД
+            context.insert(newItem)
+        }
         
-        // 2. Сохраняем в контекст SwiftData
-        context.insert(newItem)
-        
-        // 3. Закрываем шторку
+        // 2. Закрываем шторку
         dismiss()
     }
 }

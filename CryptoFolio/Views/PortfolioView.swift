@@ -39,6 +39,7 @@ struct PortfolioView: View {
                                 NavigationLink(destination: DetailView(coin: coin)) {
                                     PortfolioRow(coin: coin, item: item)
                                 }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
