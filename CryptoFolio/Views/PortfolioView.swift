@@ -6,27 +6,39 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PortfolioView: View {
-    @Environment(CoinViewModel.self) private var coinVM: CoinViewModel
+    // 1. Достаем ViewModel (чтобы знать текущие цены)
+    @Environment(CoinViewModel.self) var coinVM: CoinViewModel
+    
+    // 2. Достаем список сохраненных монет из базы
+    @Query var portfolioCoins: [PortfolioItem]
+    
+    @Environment(\.modelContext) private var context
+    
+    @State private var showedEditPortfolio: Bool = false
     
     var body: some View {
         NavigationStack{
             ScrollView{
                 VStack(alignment: .leading, spacing: 20) {
-                    // Здесь будет красивая карточка баланса, но пока заглушка
-                    Text("Баланс Портфолио: $0.00")
+                    // Карточка баланса
+                    Text("Портфолио")
                         .font(.title2)
                         .bold()
-                        .padding()
+                        .padding([.top, .horizontal])
                     
-                    // 👨‍🏫 УЧИТЕЛЬ:
-                    // Смотри, мы снова используем CoinRow!
-                    // Нам не нужно писать код верстки монеты заново.
-                    // DRY - Don't Repeat Yourself (Не повторяйся).
-                    // Пока выведем все монеты, чтобы проверить связь.
-                    ForEach(coinVM.coins) { coin in
-                         CoinRow(coin: coin)
+                    if portfolioCoins.isEmpty {
+                        Text("У вас пока нет активов. Нажмите +, чтобы добавить.")
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }else{
+                        ForEach(portfolioCoins){ item in
+                            if let coin = coinVM.coins.first(where: {$0.id == item.coinId}){
+                                PortfolioRow(coin: coin, item: item)
+                            }
+                        }
                     }
                 }
             }
@@ -34,17 +46,49 @@ struct PortfolioView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        print("Add button tapped")
+                        showedEditPortfolio.toggle()
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
             }
         }
+        .sheet(isPresented: $showedEditPortfolio) {
+            EditPortfolioView()
+                .environment(coinVM)
+        }
+    }
+}
+
+
+struct PortfolioRow: View {
+    let coin: Coin
+    let item: PortfolioItem
+    
+    var body: some View {
+        HStack {
+            // Логотип и имя (используем твой готовый CoinRow или упрощаем)
+            CoinRow(coin: coin)
+            
+            Spacer()
+            
+            // Информация о наших активах
+            VStack(alignment: .trailing) {
+                // Текущая стоимость наших монет (Цена * Количество)
+                Text("$\(coin.currentPrice * item.amount, specifier: "%.2f")")
+                    .bold()
+                
+                // Сколько штук у нас есть
+                Text("\(item.amount, specifier: "%.2f") \(coin.symbol.uppercased())")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            }
+        }
+        .padding(.horizontal)
     }
 }
 
 #Preview {
-    Portfolio()
+    PortfolioView()
         .environment(CoinViewModel())
 }
