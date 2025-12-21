@@ -10,7 +10,7 @@ import Foundation
 import Foundation
 
 // MARK: - Coin Model
-struct Coin: Identifiable, Codable {
+struct Coin: Identifiable, Codable, Equatable {
     let id: String
     let symbol: String
     let name: String
@@ -25,7 +25,7 @@ struct Coin: Identifiable, Codable {
     let low24h: Double?
     let sparklineIn7D: SparklineIn7D?
     
-    struct SparklineIn7D: Codable {
+    struct SparklineIn7D: Codable, Equatable {
         let price: [Double]
     }
     
